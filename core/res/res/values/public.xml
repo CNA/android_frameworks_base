@@ -3851,6 +3851,7 @@
 
   <java-symbol type="string" name="config_legacyUmsLunFile" />
   <java-symbol type="bool" name="config_forceDisableHardwareKeyboard" />
+  <java-symbol type="bool" name="config_autoBrightnessButtonKeyboard" />
   
   <!-- Hide Navbar -->
   <java-symbol type="layout" name="global_actions_navbar_mode" />
