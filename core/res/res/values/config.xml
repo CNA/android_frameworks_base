@@ -940,4 +940,7 @@
          the button and keyboard backlights. -->
     <bool name="config_autoBrightnessButtonKeyboard">true</bool>
 
+    <!-- Asus dock compatibility disabled by default -->
+    <bool name="config_hasDockBattery">false</bool>
+
 </resources>
