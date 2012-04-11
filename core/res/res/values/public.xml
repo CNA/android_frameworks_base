@@ -3825,4 +3825,7 @@
   <java-symbol type="string" name="second" />
   <java-symbol type="string" name="seconds" />
 
+  <java-symbol type="string" name="config_deviceKeyHandlerLib" />
+  <java-symbol type="string" name="config_deviceKeyHandlerClass" />
+
 </resources>
