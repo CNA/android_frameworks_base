@@ -892,4 +892,7 @@
     <!-- Name of that key handler class -->
     <string name="config_deviceKeyHandlerClass" translatable="false"></string>
 
+    <!-- device compat boolean -->
+    <bool name="config_hideMobileSignalOnWifi">false</bool>
+
 </resources>
