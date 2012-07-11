@@ -20,6 +20,7 @@ package android.telephony;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.SystemProperties;
 import android.util.Log;
 
 /**
@@ -62,6 +63,10 @@ public class SignalStrength implements Parcelable {
     private int mLteRsrq;
     private int mLteRssnr;
     private int mLteCqi;
+    private int mGsmOemBitErrorRate;
+    private int mGsmOemSignalStrength;
+    private int mOemRatType;
+    private boolean mUseOem;
 
     private boolean isGsm; // This value is set by the ServiceStateTracker onSignalStrengthResult
 
@@ -102,6 +107,10 @@ public class SignalStrength implements Parcelable {
         mLteRssnr = INVALID_SNR;
         mLteCqi = -1;
         isGsm = true;
+        
+        mOemRatType = 0;
+        mGsmOemSignalStrength = -0x6c;
+        mGsmOemBitErrorRate = -1;
     }
 
     /**
@@ -127,6 +136,9 @@ public class SignalStrength implements Parcelable {
         mLteRssnr = lteRssnr;
         mLteCqi = lteCqi;
         isGsm = gsm;
+        
+        mUseOem = false;
+        
     }
 
     /**
@@ -151,6 +163,7 @@ public class SignalStrength implements Parcelable {
      * @hide
      */
     public SignalStrength(SignalStrength s) {
+        mUseOem = false;
         copyFrom(s);
     }
 
@@ -171,6 +184,10 @@ public class SignalStrength implements Parcelable {
         mLteRssnr = s.mLteRssnr;
         mLteCqi = s.mLteCqi;
         isGsm = s.isGsm;
+        mOemRatType = s.mOemRatType;
+        mGsmOemSignalStrength = s.mGsmOemSignalStrength;
+        mGsmOemBitErrorRate = s.mGsmOemBitErrorRate;
+        mUseOem = s.mUseOem;
     }
 
     /**
@@ -192,6 +209,12 @@ public class SignalStrength implements Parcelable {
         mLteRssnr = in.readInt();
         mLteCqi = in.readInt();
         isGsm = (in.readInt() != 0);
+        
+        mUseOem = false;
+        mOemRatType = in.readInt();
+        mGsmOemSignalStrength = in.readInt();
+        mGsmOemBitErrorRate = in.readInt();
+        mUseOem = (in.readInt() != 0);
     }
 
     /**
@@ -211,6 +234,10 @@ public class SignalStrength implements Parcelable {
         out.writeInt(mLteRssnr);
         out.writeInt(mLteCqi);
         out.writeInt(isGsm ? 1 : 0);
+        out.writeInt(mOemRatType);
+        out.writeInt(mGsmOemSignalStrength);
+        out.writeInt(mGsmOemBitErrorRate);
+        out.writeInt(mUseOem ? 1 : 0);
     }
 
     /**
@@ -291,11 +318,11 @@ public class SignalStrength implements Parcelable {
      */
     public int getLevel() {
         int level;
-
+        String motoRILVer = SystemProperties.get("gsm.version.ril-impl", "");
         if (isGsm) {
-            // TODO Need solve the discrepancy of invalid values between
-            // RIL_LTE_SignalStrength and here.
-            if ((mLteSignalStrength == -1)
+            if (motoRILVer.indexOf("ver4RIL") != -1){
+                level = getGsmLevel();
+            } else if ((mLteSignalStrength == -1)
                     && (mLteRsrp == -1)
                     && (mLteRsrq == -1)
                     && (mLteCqi == -1)) {
@@ -328,6 +355,8 @@ public class SignalStrength implements Parcelable {
      */
     public int getAsuLevel() {
         int asuLevel;
+        
+        String motoRILVer = SystemProperties.get("gsm.version.ril-impl", "");
         if (isGsm) {
             if ((mLteSignalStrength == -1)
                     && (mLteRsrp == -1)
@@ -338,17 +367,21 @@ public class SignalStrength implements Parcelable {
                 asuLevel = getLteAsuLevel();
             }
         } else {
-            int cdmaAsuLevel = getCdmaAsuLevel();
-            int evdoAsuLevel = getEvdoAsuLevel();
-            if (evdoAsuLevel == 0) {
-                /* We don't know evdo use, cdma */
-                asuLevel = cdmaAsuLevel;
-            } else if (cdmaAsuLevel == 0) {
-                /* We don't know cdma use, evdo */
-                asuLevel = evdoAsuLevel;
+            if (motoRILVer.indexOf("ver4RIL") != -1) {
+                asuLevel = getGsmAsuLevel();
             } else {
-                /* We know both, use the lowest level */
-                asuLevel = cdmaAsuLevel < evdoAsuLevel ? cdmaAsuLevel : evdoAsuLevel;
+                int cdmaAsuLevel = getCdmaAsuLevel();
+                int evdoAsuLevel = getEvdoAsuLevel();
+                if (evdoAsuLevel == 0) {
+                    /* We don't know evdo use, cdma */
+                    asuLevel = cdmaAsuLevel;
+                } else if (cdmaAsuLevel == 0) {
+                    /* We don't know cdma use, evdo */
+                    asuLevel = evdoAsuLevel;
+                } else {
+                    /* We know both, use the lowest level */
+                    asuLevel = cdmaAsuLevel < evdoAsuLevel ? cdmaAsuLevel : evdoAsuLevel;
+                }
             }
         }
         if (DBG) log("getAsuLevel=" + asuLevel);
@@ -362,9 +395,11 @@ public class SignalStrength implements Parcelable {
      */
     public int getDbm() {
         int dBm;
-
+        String motoRILVer = SystemProperties.get("gsm.version.ril-impl", "");
         if(isGsm()) {
-            if ((mLteSignalStrength == -1)
+            if (motoRILVer.indexOf("ver4RIL") != -1){
+                dBm = getGsmDbm();
+            } else if ((mLteSignalStrength == -1)
                     && (mLteRsrp == -1)
                     && (mLteRsrq == -1)
                     && (mLteCqi == -1)) {
@@ -390,7 +425,8 @@ public class SignalStrength implements Parcelable {
         int gsmSignalStrength = getGsmSignalStrength();
         int asu = (gsmSignalStrength == 99 ? -1 : gsmSignalStrength);
         if (asu != -1) {
-            dBm = -113 + (2 * asu);
+            if (mUseOem) dBm = mGsmOemSignalStrength;
+            else dBm = -113 + (2 * asu);
         } else {
             dBm = -1;
         }
@@ -416,6 +452,65 @@ public class SignalStrength implements Parcelable {
         else if (asu >= 8)  level = SIGNAL_STRENGTH_GOOD;
         else if (asu >= 5)  level = SIGNAL_STRENGTH_MODERATE;
         else level = SIGNAL_STRENGTH_POOR;
+        
+        /* Moto RIL hell */
+        if (this.mUseOem){
+            if (this.mOemRatType != 3) {
+                if (this.mOemRatType == 5) {
+                    level = 0;
+//                    if (this.mGsmOemSignalStrength <= -80) {
+//                        if ((this.mGsmOemSignalStrength > -80) || (this.mGsmOemSignalStrength <= -90)) {
+//                            if ((this.mGsmOemSignalStrength > -90) || (this.mGsmOemSignalStrength <= -100)) {
+//                                if ((this.mGsmOemSignalStrength > -100) || (this.mGsmOemSignalStrength <= -106)) {
+//                                    if (this.mGsmOemSignalStrength <= -106) level = 1;
+//                                } else level = 2;
+//                            } else level = 3;
+//                        } else level = 4;
+//                    } else level = 4;
+                    
+                    if (this.mGsmOemSignalStrength > -80) level = 4;
+                    else if (mGsmOemSignalStrength <= -80 && mGsmOemSignalStrength > -90) level = 4;
+                    else if (mGsmOemSignalStrength <= -90 && mGsmOemSignalStrength > -100) level = 3;
+                    else if (mGsmOemSignalStrength <= -100 && mGsmSignalStrength > -106) level = 2;
+                    else level = 1;
+                    
+//                    int j = 0;
+//                    if (this.mGsmOemBitErrorRate <= -10) {
+//                        if ((this.mGsmOemBitErrorRate > -10) || (this.mGsmOemBitErrorRate <= -12)) {
+//                            if ((this.mGsmOemBitErrorRate > -12) || (this.mGsmOemBitErrorRate <= -14)) {
+//                                if ((this.mGsmOemBitErrorRate > -14) || (this.mGsmOemBitErrorRate <= -16)) {
+//                                    if (this.mGsmOemBitErrorRate <= -16) j = 1;
+//                                } else j = 2;
+//                            } else j = 3;
+//                        } else j = 4;
+//                    } else j = 4;
+//                    if (level >= j) level = j;
+//                    else level = level;
+                    
+                    int j = 0;
+                    if (mGsmOemBitErrorRate > -10) j = 4;
+                    else if (mGsmOemBitErrorRate <= -10 && mGsmOemBitErrorRate > -12) j = 4;
+                    else if (mGsmOemBitErrorRate <= -12 && mGsmOemBitErrorRate > -14) j = 3;
+                    else if (mGsmOemBitErrorRate <= -14 && mGsmOemBitErrorRate > -16) j = 2;
+                    else if (this.mGsmOemBitErrorRate <= -16) j = 1;
+                    
+                    if (level >= j) level = j;
+                }
+            } 
+//              else if (this.mGsmOemSignalStrength <= -80) {
+//                if ((this.mGsmOemSignalStrength > -80) || (this.mGsmOemSignalStrength <= -89)) {
+//                    if ((this.mGsmOemSignalStrength > -89) || (this.mGsmOemSignalStrength <= -98)) {
+//                        if ((this.mGsmOemSignalStrength > -98)
+//                                || (this.mGsmOemSignalStrength <= -104)) {
+//                            if (this.mGsmOemSignalStrength <= -104) level = 1;
+//                        } else level = 2;
+//                    } else level = 3;
+                else if (mGsmOemSignalStrength > -80) level = 4;
+                else if (mGsmOemSignalStrength <= -80 && mGsmOemSignalStrength > -89) level = 3;
+                else if (mGsmOemSignalStrength <= -89 && mGsmOemSignalStrength > -98) level = 2;
+                else if (mGsmOemSignalStrength <= -98 && mGsmOemSignalStrength > -104) level = 1;
+        }
+        
         if (DBG) log("getGsmLevel=" + level);
         return level;
     }
@@ -631,7 +726,8 @@ public class SignalStrength implements Parcelable {
                 + (mEvdoDbm * primeNum) + (mEvdoEcio * primeNum) + (mEvdoSnr * primeNum)
                 + (mLteSignalStrength * primeNum) + (mLteRsrp * primeNum)
                 + (mLteRsrq * primeNum) + (mLteRssnr * primeNum) + (mLteCqi * primeNum)
-                + (isGsm ? 1 : 0));
+                + (isGsm ? 1 : 0)) + mOemRatType + mGsmOemSignalStrength + mGsmOemBitErrorRate
+                + (mUseOem ? 1 : 0);
     }
 
     /**
@@ -663,7 +759,11 @@ public class SignalStrength implements Parcelable {
                 && mLteRsrq == s.mLteRsrq
                 && mLteRssnr == s.mLteRssnr
                 && mLteCqi == s.mLteCqi
-                && isGsm == s.isGsm);
+                && isGsm == s.isGsm
+                && mOemRatType == s.mOemRatType
+                && mGsmOemSignalStrength == s.mGsmOemSignalStrength
+                && mGsmOemBitErrorRate == s.mGsmOemBitErrorRate
+                && mUseOem == s.mUseOem);
     }
 
     /**
@@ -684,7 +784,11 @@ public class SignalStrength implements Parcelable {
                 + " " + mLteRsrq
                 + " " + mLteRssnr
                 + " " + mLteCqi
-                + " " + (isGsm ? "gsm|lte" : "cdma"));
+                + " " + (isGsm ? "gsm|lte" : "cdma"))
+                + " " + mOemRatType
+                + " " + mGsmOemSignalStrength
+                + " " + mGsmOemBitErrorRate
+                + " " + mUseOem;
     }
 
     /**
@@ -707,6 +811,10 @@ public class SignalStrength implements Parcelable {
         mLteRssnr = m.getInt("LteRssnr");
         mLteCqi = m.getInt("LteCqi");
         isGsm = m.getBoolean("isGsm");
+        mOemRatType = m.getInt("OemRatType");
+        mGsmOemSignalStrength = m.getInt("GsmOemSignalStrength");
+        mGsmOemBitErrorRate = m.getInt("GsmOemBitErrorRate");
+        mUseOem = m.getBoolean("UseOem");
     }
 
     /**
@@ -729,6 +837,10 @@ public class SignalStrength implements Parcelable {
         m.putInt("LteRssnr", mLteRssnr);
         m.putInt("LteCqi", mLteCqi);
         m.putBoolean("isGsm", Boolean.valueOf(isGsm));
+        m.putInt("OemRatType", mOemRatType);
+        m.putInt("GsmOemSignalStrength", mGsmOemSignalStrength);
+        m.putInt("GsmOemBitErrorRate", mGsmOemBitErrorRate);
+        m.putBoolean("UseOem", mUseOem);
     }
 
     /**
@@ -736,5 +848,13 @@ public class SignalStrength implements Parcelable {
      */
     private static void log(String s) {
         Log.w(LOG_TAG, s);
+    }
+    
+    public void setOemSignalStrength(int ratType, int gsmOemSignalStrength, int gsmOemBitErrorRate)
+    {
+      mOemRatType = ratType;
+      mGsmOemSignalStrength = gsmOemSignalStrength;
+      mGsmOemBitErrorRate = gsmOemBitErrorRate;
+      mUseOem = true;
     }
 }
