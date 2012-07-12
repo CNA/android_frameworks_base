@@ -3857,4 +3857,11 @@
   <java-symbol type="string" name="com.amazon.mp3.playstatechanged_album" />
   <java-symbol type="string" name="com.amazon.mp3.playstatechanged_id" />
 
+<!-- ===============================================================
+     Extra resources
+     =============================================================== -->
+  <eat-comment />
+
+  <java-symbol type="string" name="config_legacyUmsLunFile" />
+
 </resources>
