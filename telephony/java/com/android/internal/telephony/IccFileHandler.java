@@ -128,6 +128,16 @@ public abstract class IccFileHandler extends Handler implements IccConstants {
         mCi = ci;
     }
 
+    /**
+     * Compatibility constructor for legacy LTE on Verizon Xoom
+     * @param phone
+     */
+    protected IccFileHandler(PhoneBase phone) {
+        mParentCard = phone.mIccCard.get();
+        mAid = mParentCard.getAid();
+        mCi = phone.mCM;
+    }
+
     public void dispose() {
     }
 
