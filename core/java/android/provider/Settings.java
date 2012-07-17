@@ -2960,6 +2960,12 @@ public final class Settings {
             Secure.WIFI_WATCHDOG_PING_TIMEOUT_MS;
 
         /**
+         * Whether the UI is initiated in tablet UI (false = phone UI)
+         * @hide
+         */
+        public static final String TABLET_UI = "tablet_ui";
+
+        /**
          * @hide
          */
         public static final String NAVIGATION_BAR_SHOW = "navigation_bar_show";
