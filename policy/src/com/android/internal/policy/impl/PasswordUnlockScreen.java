@@ -24,6 +24,7 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.security.KeyStore;
 import android.text.Editable;
 import android.text.InputType;

@@ -87,6 +87,7 @@ import com.android.systemui.statusbar.RotationToggle;
 import com.android.systemui.statusbar.SignalClusterView;
 import com.android.systemui.statusbar.StatusBarIconView;
 import com.android.systemui.statusbar.policy.BatteryController;
+import com.android.systemui.statusbar.policy.BatteryControllerNotification;
 import com.android.systemui.statusbar.policy.DateView;
 import com.android.systemui.statusbar.policy.IntruderAlertView;
 import com.android.systemui.statusbar.policy.LocationController;
@@ -143,7 +144,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     PhoneStatusBarPolicy mIconPolicy;
 
     // These are no longer handled by the policy, because we need custom strategies for them
-    BatteryController mBatteryController;
+    //BatteryController mBatteryController;
     LocationController mLocationController;
     NetworkController mNetworkController;
 
@@ -181,6 +182,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     View mClearButton;
     View mSettingsButton;
     RotationToggle mRotationButton;
+    BatteryControllerNotification mBatteryNotification;
 
     // carrier/wifi label
     private TextView mCarrierLabel;
@@ -433,6 +435,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         mClearButton.setAlpha(0f);
         mClearButton.setVisibility(View.INVISIBLE);
         mClearButton.setEnabled(false);
+        mBatteryNotification = (BatteryControllerNotification)mStatusBarWindow.findViewById(R.id.battery_notification);
         mDateView = (DateView)mStatusBarWindow.findViewById(R.id.date);
         mSettingsButton = mStatusBarWindow.findViewById(R.id.settings_button);
         mSettingsButton.setOnClickListener(mSettingsButtonListener);
@@ -478,8 +481,8 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         // Other icons
         mLocationController = new LocationController(mContext); // will post a notification
-        mBatteryController = new BatteryController(mContext);
-        mBatteryController.addIconView((ImageView)mStatusBarView.findViewById(R.id.battery));
+        //mBatteryController = new BatteryController(mContext);
+        //mBatteryController.addIconView((ImageView)mStatusBarView.findViewById(R.id.battery));
         mNetworkController = new NetworkController(mContext);
         final SignalClusterView signalCluster =
                 (SignalClusterView)mStatusBarView.findViewById(R.id.signal_cluster);
@@ -984,6 +987,8 @@ public class PhoneStatusBar extends BaseStatusBar {
         final boolean any = mNotificationData.size() > 0;
 
         final boolean clearable = any && mNotificationData.hasClearableItems();
+        
+        mBatteryNotification.isVisible(!clearable);
 
         if (DEBUG) {
             Slog.d(TAG, "setAreThereNotifications: N=" + mNotificationData.size()
