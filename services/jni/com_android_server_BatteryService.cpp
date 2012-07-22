@@ -233,7 +233,7 @@ static void android_server_BatteryService_update(JNIEnv* env, jobject obj)
 #ifdef HAS_DOCK_BATTERY
     setIntField(env, obj, gPaths.dockbatteryCapacityPath, gFieldIds.mDockBatteryLevel);
 #endif
-    
+
     setIntField(env, obj, gPaths.batteryCapacityPath, gFieldIds.mBatteryLevel);
     setVoltageField(env, obj, gPaths.batteryVoltagePath, gFieldIds.mBatteryVoltage);
     setIntField(env, obj, gPaths.batteryTemperaturePath, gFieldIds.mBatteryTemperature);

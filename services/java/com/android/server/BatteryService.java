@@ -20,9 +20,11 @@ import com.android.internal.app.IBatteryStats;
 import com.android.server.am.BatteryStatsService;
 
 import android.app.ActivityManagerNative;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.ContentObserver;
@@ -171,6 +173,10 @@ class BatteryService extends Binder {
 
         SettingsObserver observer = new SettingsObserver(new Handler());
         observer.observe();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_DOCK_EVENT);
+        mContext.registerReceiver(mDockBroadcastReceiver, filter);
 
         // set initial status
         update();
@@ -579,6 +585,24 @@ class BatteryService extends Binder {
     private synchronized void updateLedPulse() {
         mLed.updateLightsLocked();
     }
+
+    private BroadcastReceiver mDockBroadcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            final int state = intent.getIntExtra(Intent.EXTRA_DOCK_STATE,
+                                                 Intent.EXTRA_DOCK_STATE_UNDOCKED);
+
+            Slog.d(TAG, "Got dock event, state = " + state + ", hasDockBatter: " + mHasDockBattery);
+            if (mHasDockBattery && state != Intent.EXTRA_DOCK_STATE_UNDOCKED)
+            {
+                Slog.d(TAG, "Updating battery from dock intent");
+                update();
+            }
+        }
+
+    };
 
     class Led {
         private LightsService mLightsService;
