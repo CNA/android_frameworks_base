@@ -3042,6 +3042,12 @@ public final class Settings {
         public static final String NAVIGATION_BAR_WIDTH = "navigation_bar_width";
 
         /**
+         * Show the pending notification counts as overlays on the status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_NOTIF_COUNT = "status_bar_notif_count";
+
+        /**
          * @hide
          * AM/PM Style for clock options
          * 0 - Normal AM/PM
