@@ -36,7 +36,7 @@
         <attr name="recentItemLayout" format="reference" />
     </declare-styleable>
     <declare-styleable name="BatteryBarController">
-	<attr name="viewLocation" format="integer" />
+        <attr name="viewLocation" format="integer" />
     </declare-styleable>
 </resources>
 
