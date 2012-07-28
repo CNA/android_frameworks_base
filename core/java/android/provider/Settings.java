@@ -2838,6 +2838,11 @@ public final class Settings {
          * Show the pending notification counts as overlays on the status bar
 
         /**
+         * Whether national data Roming should be used.
+         */
+        public static final String MVNO_ROAMING = "mvno_roaming";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
