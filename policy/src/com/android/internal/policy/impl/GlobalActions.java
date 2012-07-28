@@ -229,6 +229,11 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                     mWindowManagerFuncs.shutdown();
                 }
 
+                public boolean onLongPress() {
+                    mWindowManagerFuncs.rebootSafeMode();
+                    return true;
+                }
+
                 public boolean showDuringKeyguard() {
                     return true;
                 }
