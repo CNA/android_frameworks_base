@@ -3185,6 +3185,12 @@ public final class Settings {
                 "navigation_custom_app_icon_3",
                 "navigation_custom_app_icon_4",
         };
+
+        /**
+         *
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_BUTTON_ALPHA = "navigation_bar_button_alpha";
     }
 
     /**
