@@ -199,19 +199,21 @@
             android:layout_width="match_parent">
 
             <com.android.systemui.statusbar.policy.BatteryBarController
-                android:layout_width="1dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:visibility="gone"
                 android:layout_alignParentLeft="true"
                 systemui:viewLocation="2"
                 android:rotation="180" />
-
+            
             <com.android.systemui.statusbar.policy.BatteryBarController
-                android:layout_width="1dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:visibility="gone"
                 android:layout_alignParentRight="true"
-                    systemui:viewLocation="3"
+                systemui:viewLocation="3"
                 android:rotation="180" />
 
         </RelativeLayout>
