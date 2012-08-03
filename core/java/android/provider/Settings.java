@@ -2693,6 +2693,12 @@ public final class Settings {
         public static final String STATUS_BAR_NOTIF_COUNT = "status_bar_notif_count";
 
         /**
+         * Whether power menu reboot is enabled
+         * @hide
+         */
+        public static final String POWER_MENU_REBOOT_ENABLED = "power_menu_reboot_enabled";
+
+        /**
          * Whether System profiles are enabled
          * @hide
          */
@@ -2703,6 +2709,18 @@ public final class Settings {
          * @hide
          */
         public static final String POWER_MENU_SCREENSHOT_ENABLED = "power_menu_screenshot_enabled";
+
+        /**
+         * Whether power menu airplane mode is enabled
+         * @hide
+         */
+        public static final String POWER_MENU_AIRPLANEMODE_ENABLED = "power_menu_airplanemode_enabled";
+
+        /**
+         * Whether power menu silent toggle is enabled
+         * @hide
+         */
+        public static final String POWER_MENU_SILENTTOGGLE_ENABLED = "power_menu_silenttoggle_enabled";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings

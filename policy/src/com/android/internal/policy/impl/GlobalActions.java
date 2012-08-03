@@ -83,8 +83,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private static final String TAG = "GlobalActions";
 
-    private static final boolean SHOW_SILENT_TOGGLE = true;
-
     private final Context mContext;
     private final WindowManagerFuncs mWindowManagerFuncs;
 
@@ -110,8 +108,11 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private IWindowManager mIWindowManager;
     private Profile mChosenProfile;
 
+    private static final String POWER_MENU_REBOOT_ENABLED = "power_menu_reboot_enabled";
     private static final String SYSTEM_PROFILES_ENABLED = "system_profiles_enabled";
     private static final String POWER_MENU_SCREENSHOT_ENABLED = "power_menu_screenshot_enabled";
+    private static final String POWER_MENU_AIRPLANEMODE_ENABLED = "power_menu_airplanemode_enabled";
+    private static final String POWER_MENU_SILENTTOGGLE_ENABLED = "power_menu_silenttoggle_enabled";
 
     /**
      * @param context everything needs a context :(
@@ -258,29 +259,31 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 }
             });
 
-        // next: reboot
-        mItems.add(
-            new SinglePressAction(R.drawable.ic_lock_reboot, R.string.global_action_reboot) {
-                public void onPress() {
-                    mWindowManagerFuncs.reboot();
-                }
+        // next: reboot - only shown if enabled, enabled by default
+        if (Settings.System.getInt(mContext.getContentResolver(), POWER_MENU_REBOOT_ENABLED, 1) == 1) {
+            mItems.add(
+                new SinglePressAction(R.drawable.ic_lock_reboot, R.string.global_action_reboot) {
+                    public void onPress() {
+                        mWindowManagerFuncs.reboot();
+                    }
 
-                public boolean onLongPress() {
-                    mWindowManagerFuncs.rebootSafeMode();
-                    return true;
-                }
+                    public boolean onLongPress() {
+                        mWindowManagerFuncs.rebootSafeMode();
+                        return true;
+                    }
 
-                public boolean showDuringKeyguard() {
-                    return true;
-                }
+                    public boolean showDuringKeyguard() {
+                        return true;
+                    }
 
-                public boolean showBeforeProvisioning() {
-                    return true;
-                }
-            });
+                    public boolean showBeforeProvisioning() {
+                        return true;
+                    }
+                });
+        }
 
-        // next: profile - only shown if enabled, enabled by default
-        if (Settings.System.getInt(mContext.getContentResolver(), SYSTEM_PROFILES_ENABLED, 1) == 1) {
+        // next: profile - only shown if enabled, disabled by default
+        if (Settings.System.getInt(mContext.getContentResolver(), SYSTEM_PROFILES_ENABLED, 0) == 1) {
             mItems.add(
                 new ProfileChooseAction() {
                     public void onPress() {
@@ -302,8 +305,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         }
 
         // next: screenshot - only shown if enabled, disabled by default
-        if (Settings.System.getInt(mContext.getContentResolver(),
-                POWER_MENU_SCREENSHOT_ENABLED, 0) == 1) {
+        if (Settings.System.getInt(mContext.getContentResolver(), POWER_MENU_SCREENSHOT_ENABLED, 0) == 1) {
             mItems.add(
                 new SinglePressAction(R.drawable.ic_lock_screenshot, R.string.global_action_screenshot) {
                     public void onPress() {
@@ -320,8 +322,10 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 });
         }
 
-        // next: airplane mode
-        mItems.add(mAirplaneModeOn);
+        // next: airplane mode - only shown if enabled, enabled by default
+        if (Settings.System.getInt(mContext.getContentResolver(), POWER_MENU_AIRPLANEMODE_ENABLED, 1) == 1) {
+            mItems.add(mAirplaneModeOn);
+        }
 
         // next: users
         List<UserInfo> users = mContext.getPackageManager().getUsers();
@@ -360,8 +364,8 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             }
         }
 
-        // last: silent mode
-        if (SHOW_SILENT_TOGGLE) {
+        // last: silent mode - only shown if enabled, enabled by default
+        if (Settings.System.getInt(mContext.getContentResolver(), POWER_MENU_SILENTTOGGLE_ENABLED, 1) == 1) {
             mItems.add(mSilentModeAction);
         }
 
@@ -527,7 +531,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG);
         }
 
-        if (SHOW_SILENT_TOGGLE) {
+        if (Settings.System.getInt(mContext.getContentResolver(), POWER_MENU_SILENTTOGGLE_ENABLED, 1) == 1) {
             IntentFilter filter = new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION);
             mContext.registerReceiver(mRingerModeReceiver, filter);
         }
@@ -544,7 +548,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     /** {@inheritDoc} */
     public void onDismiss(DialogInterface dialog) {
-        if (SHOW_SILENT_TOGGLE) {
+        if (Settings.System.getInt(mContext.getContentResolver(), POWER_MENU_SILENTTOGGLE_ENABLED, 1) == 1) {
             mContext.unregisterReceiver(mRingerModeReceiver);
         }
     }
