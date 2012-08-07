@@ -3681,10 +3681,11 @@
   <java-symbol type="bool" name="config_screenOffAnimation" />
   <java-symbol type="bool" name="config_hasRotationLockSwitch" />
   <java-symbol type="bool" name="config_hasDockBattery" />
+  <java-symbol type="bool" name="config_smsSamsungCdmaAlternateMessageIDEncoding" />
   <java-symbol type="integer" name="config_deviceHardwareKeys" />
   <java-symbol type="bool" name="config_hasRemovableLid" />
+  <java-symbol type="bool" name="config_samsung_stk" />
   <java-symbol type="bool" name="config_noDelayInATwoDP" />
-  <java-symbol type="bool" name="config_smsSamsungCdmaAlternateMessageIDEncoding" />
 
   <!-- Notification and battery light -->
   <java-symbol type="bool" name="config_intrusiveBatteryLed" />
