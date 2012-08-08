@@ -3190,6 +3190,26 @@ public final class Settings {
         public static final String NAVIGATION_BAR_HEIGHT_LANDSCAPE = "navigation_bar_height_landscape";
 
         /**
+         * @hide
+         */
+        public static final String STATUSBAR_TOGGLES_ENABLED_COLOR = "statusbar_toggles_enabled_color";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_TOGGLES_DISABLED_COLOR = "statusbar_toggles_disabled_color";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_TOGGLES_ALPHA = "statusbar_toggles_alpha";
+
+        /**
+         * @hide
+         */
+        public static final String STATUS_BAR_LAYOUT = "statusbar_layout";
+
+        /**
          * Navigation bar height in landscape if the bar is along the side of the device
          * @hide
          */
