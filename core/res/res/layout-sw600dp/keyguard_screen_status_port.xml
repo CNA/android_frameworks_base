@@ -2,10 +2,7 @@
 <!--
 **
 ** Copyright 2010, The Android Open Source Project
-<<<<<<< HEAD
 ** Copyright 2012, The CyanogenMod Project (Weather, Calendar)
-=======
->>>>>>> android-4.1.1_r4
 **
 ** Licensed under the Apache License, Version 2.0 (the "License")
 ** you may not use this file except in compliance with the License.
@@ -44,7 +41,6 @@
         android:visibility="gone"
         />
 
-<<<<<<< HEAD
     <!-- CyanogenMod Weather Panel -->
     <RelativeLayout
         android:id="@+id/weather_panel"
@@ -147,13 +143,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dip" >
-=======
-    <com.android.internal.widget.DigitalClock android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dip"
-        android:layout_marginBottom="8dip">
->>>>>>> android-4.1.1_r4
 
         <!-- Because we can't have multi-tone fonts, we render two TextViews, one on
         top of the other. Hence the redundant layout... -->
@@ -229,7 +218,6 @@
         android:visibility="invisible"
         android:textColor="@color/lockscreen_owner_info"
         />
-<<<<<<< HEAD
 
     <!-- CyanogenMod Calendar Panel -->
     <LinearLayout
@@ -294,6 +282,4 @@
 
     </LinearLayout>
 
-=======
->>>>>>> android-4.1.1_r4
 </LinearLayout>
