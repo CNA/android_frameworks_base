@@ -460,7 +460,6 @@ public class KeyguardViewMediator implements KeyguardViewCallback,
             } else if (why == WindowManagerPolicy.OFF_BECAUSE_OF_PROX_SENSOR) {
                 // Do not enable the keyguard if the prox sensor forced the screen off.
             } else {
-                final ContentResolver cr = mContext.getContentResolver();
                 // user turned the screen off likely
                 // we wanna check if the user wants to use the timeout setting here too
                 boolean userOverride = Settings.Secure.getInt(cr,
