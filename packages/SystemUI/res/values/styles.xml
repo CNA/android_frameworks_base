@@ -114,6 +114,7 @@
     	<item name="android:layout_gravity">center</item>
     	<item name="android:textSize">9dp</item>
     	<item name="android:textStyle">bold</item>
+    </style>
 
     <style name="StatusBarPanelSettingsIcon">
         <item name="android:layout_height">match_parent</item>
