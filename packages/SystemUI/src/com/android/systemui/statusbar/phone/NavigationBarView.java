@@ -476,11 +476,10 @@ public class NavigationBarView extends LinearLayout {
         if (getBackButton() != null) {
         	getBackButton().setAlpha(
         			(0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_NOP)) ? 0.5f : 1.0f);
-        	// Disable this for the moment
-        	/*((ImageView)getBackButton()).setImageDrawable(
+        	((ImageView)getBackButton()).setImageDrawable(
                 (0 != (hints & StatusBarManager.NAVIGATION_HINT_BACK_ALT))
                     ? (mVertical ? mBackAltLandIcon : mBackAltIcon)
-                    : (mVertical ? mBackLandIcon : mBackIcon)); */
+                    : (mVertical ? mBackLandIcon : mBackIcon));
         }
         if (getHomeButton()!=null) {
         	getHomeButton().setAlpha(
