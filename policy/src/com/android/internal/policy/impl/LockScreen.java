@@ -17,6 +17,7 @@
 package com.android.internal.policy.impl;
 
 import android.app.ActivityManager;
+import android.content.ContentResolver;
 import android.app.ActivityManagerNative;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
@@ -29,6 +30,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
+import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -37,6 +39,7 @@ import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.media.AudioManager;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.os.Vibrator;
 import android.provider.MediaStore;
@@ -83,6 +86,11 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
     private static final int STAY_ON_WHILE_GRABBED_TIMEOUT = 30000;
     private static final String ASSIST_ICON_METADATA_NAME =
             "com.android.systemui.action_assist_icon";
+
+    public static final int LAYOUT_STOCK = 0;
+    public static final int LAYOUT_CENTERED = 1;
+
+    private int mLockscreenStyle = LAYOUT_STOCK;
 
     private LockPatternUtils mLockPatternUtils;
     private KeyguardUpdateMonitor mUpdateMonitor;
@@ -617,6 +625,9 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
         mEnableMenuKeyInLockScreen = shouldEnableMenuKey();
         mCreationOrientation = configuration.orientation;
 
+        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
+        settingsObserver.observe();
+
         if (LockPatternKeyguardView.DEBUG_CONFIGURATION) {
             Log.v(TAG, "***** CREATING LOCK SCREEN", new RuntimeException());
             Log.v(TAG, "Cur orient=" + mCreationOrientation
@@ -625,11 +636,27 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
 
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (DBG) Log.v(TAG, "Creation orientation = " + mCreationOrientation);
-        if (mCreationOrientation != Configuration.ORIENTATION_LANDSCAPE) {
-            inflater.inflate(R.layout.keyguard_screen_tab_unlock, this, true);
-        } else {
-            inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this, true);
-        }
+
+        boolean landscape = mCreationOrientation == Configuration.ORIENTATION_LANDSCAPE;
+
+        switch (mLockscreenStyle) {
+            case LAYOUT_STOCK:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                     true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this,
+                                     true);
+                break;
+            case LAYOUT_CENTERED:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                     true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_centered, this,
+                                     true);
+                break;
+         }
 
         setBackground(mContext, (ViewGroup) findViewById(R.id.root));
 
@@ -822,5 +849,32 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
         mLockPatternUtils = null;
         mUpdateMonitor = null;
         mCallback = null;
+    }
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.LOCKSCREEN_LAYOUT), false,
+                    this);
+            updateSettings();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateSettings();
+        }
+    }
+
+    protected void updateSettings() {
+        ContentResolver resolver = mContext.getContentResolver();
+
+        mLockscreenStyle = Settings.System.getInt(resolver,
+        Settings.System.LOCKSCREEN_LAYOUT, LAYOUT_STOCK);
+
     }
 }

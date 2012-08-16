@@ -2618,6 +2618,12 @@ public final class Settings {
         public static final String LOCKSCREEN_BACKGROUND = "lockscreen_background";
 
         /**
+         * Sets the lockscreen layout style
+         * @hide
+         */
+        public static final String LOCKSCREEN_LAYOUT = "lockscreen_layout";
+
+        /**
          * Show the weather on the lock screen
          * @hide
          */
