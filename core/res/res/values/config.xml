@@ -745,6 +745,12 @@
     <!-- The VoiceMail default value is displayed to my own number if it is true -->
     <bool name="config_telephony_use_own_number_for_voicemail">false</bool>
 
+    <!-- Set additional audio parameters for incall audio
+         Usage: parameter=onstring=offstring
+         Examples: <item>realcall=on=off</item> <item>dualmic_enabled=true=false</item> <item>mic_boost=yes=no</item> -->
+    <string-array name="config_telephony_set_audioparameters" translatable="false">
+    </string-array>
+
     <!-- If this value is true, Sms encoded as octet is decoded by utf8 decoder.
          If false, decoded by Latin decoder. -->
     <bool name="config_sms_utf8_support">false</bool>
@@ -752,6 +758,9 @@
     <!-- If this value is true, The mms content-disposition field is supported correctly.
          If false, Content-disposition fragments are ignored -->
     <bool name="config_mms_content_disposition_support">true</bool>
+
+    <!-- If this value is true, we handle Samsung CDMA's message ID method -->
+    <bool name="config_smsSamsungCdmaAlternateMessageIDEncoding">false</bool>
 
     <!-- National Language Identifier codes for the following two config items.
          (from 3GPP TS 23.038 V9.1.1 Table 6.2.1.2.4.1):
