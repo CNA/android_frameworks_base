@@ -3227,6 +3227,12 @@ public final class Settings {
         public static final String NOTIFICATION_BATTERY_DISPLAY = "notification_battery_display";
 
         /**
+         * custom lockscreen text color
+         * @hide
+         */
+        public static final String LOCKSCREEN_CUSTOM_TEXT_COLOR = "lockscreen_custom_text_color";
+
+        /**
          * Whether to show the battery bar
          * 
          * @hide
