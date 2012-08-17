@@ -658,7 +658,8 @@ bool OpenGLRenderer::createFboLayer(Layer* layer, Rect& bounds, sp<Snapshot> sna
     glBindFramebuffer(GL_FRAMEBUFFER, layer->getFbo());
 #ifdef QCOM_HARDWARE
     TILERENDERING_START(layer->getFbo(), clip.left, clip.top,
-                        clip.right, clip.bottom, mWidth, mHeight);
+                        clip.right, clip.bottom,
+                        bounds.getWidth(), bounds.getHeight());
 #endif
     layer->bindTexture();
 
