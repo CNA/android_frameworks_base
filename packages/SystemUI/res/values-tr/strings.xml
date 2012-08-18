@@ -145,4 +145,24 @@
     <string name="accessibility_rotation_lock_off" msgid="4062780228931590069">"Ekran otomatik olarak dönecektir."</string>
     <string name="accessibility_rotation_lock_on_landscape" msgid="6731197337665366273">"Ekran yatay yönde kilitlendi."</string>
     <string name="accessibility_rotation_lock_on_portrait" msgid="5809367521644012115">"Ekran dikey yönde kilitlendi."</string>
+    <string name="toggle_bt">BT</string>
+    <string name="toggle_data">Veri</string>
+    <string name="toggle_lte">LTE</string>
+    <string name="toggle_rotate">Oto-Dön</string>
+    <string name="toggle_wifi">Wi-Fi</string>
+    <string name="toggle_gps">GPS</string>
+    <string name="toggle_2g">2G</string>
+    <string name="toggle_wifiap">Wi-Fi AP</string>
+    <string name="toggle_airplane">UçakMod</string>
+    <string name="toggle_vibrate">Titreşim</string>
+    <string name="toggle_silent">Sessiz</string>
+    <string name="toggle_torch">Fener</string>
+    <string name="toggle_sync">Senk.</string>
+    <string name="toggle_swagger">Swagger</string>
+    <string name="toggle_fcharge">Hşarj</string>
+    <string name="toggle_tether">Paylş.</string>
+    <string name="toggle_nfc">NFC</string>
+    <string name="status_bar_settings_toggles">Kısayollar</string>
+    <string name="brightness_label">Parlaklık</string>
+    <string name="battery_test">99</string>
 </resources>
