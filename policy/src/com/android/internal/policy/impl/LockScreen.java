@@ -89,11 +89,6 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
     private static final String ASSIST_ICON_METADATA_NAME =
             "com.android.systemui.action_assist_icon";
 
-    public static final int LAYOUT_STOCK = 0;
-    public static final int LAYOUT_CENTERED = 1;
-
-    private int mLockscreenStyle = LAYOUT_STOCK;
-
     private static final int COLOR_WHITE = 0xFFFFFFFF;
 
     private LockPatternUtils mLockPatternUtils;
@@ -631,9 +626,6 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
         mEnableMenuKeyInLockScreen = shouldEnableMenuKey();
         mCreationOrientation = configuration.orientation;
 
-        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
-        settingsObserver.observe();
-
         if (LockPatternKeyguardView.DEBUG_CONFIGURATION) {
             Log.v(TAG, "***** CREATING LOCK SCREEN", new RuntimeException());
             Log.v(TAG, "Cur orient=" + mCreationOrientation
@@ -642,27 +634,11 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
 
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (DBG) Log.v(TAG, "Creation orientation = " + mCreationOrientation);
-
-        boolean landscape = mCreationOrientation == Configuration.ORIENTATION_LANDSCAPE;
-
-        switch (mLockscreenStyle) {
-            case LAYOUT_STOCK:
-                if (landscape)
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
-                                     true);
-                else
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this,
-                                     true);
-                break;
-            case LAYOUT_CENTERED:
-                if (landscape)
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
-                                     true);
-                else
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_centered, this,
-                                     true);
-                break;
-         }
+        if (mCreationOrientation != Configuration.ORIENTATION_LANDSCAPE) {
+            inflater.inflate(R.layout.keyguard_screen_tab_unlock, this, true);
+        } else {
+            inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this, true);
+        }
 
         setBackground(mContext, (ViewGroup) findViewById(R.id.root));
 
@@ -868,9 +844,6 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.LOCKSCREEN_LAYOUT), false,
-                    this);
-            resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.LOCKSCREEN_CUSTOM_TEXT_COLOR), false,
                     this);
             updateSettings();
@@ -885,9 +858,6 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
     private void updateSettings() {
         if (DEBUG) Log.d(TAG, "Settings for lockscreen have changed lets update");
         ContentResolver resolver = mContext.getContentResolver();
-
-        mLockscreenStyle = Settings.System.getInt(resolver,
-        Settings.System.LOCKSCREEN_LAYOUT, LAYOUT_STOCK);
 
         int mLockscreenColor = Settings.System.getInt(resolver,
                 Settings.System.LOCKSCREEN_CUSTOM_TEXT_COLOR, COLOR_WHITE);
