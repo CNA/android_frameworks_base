@@ -99,6 +99,7 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
     private LockPatternUtils mLockPatternUtils;
     private KeyguardUpdateMonitor mUpdateMonitor;
     private KeyguardScreenCallback mCallback;
+    private SettingsObserver mSettingsObserver;
 
     // set to 'true' to show the ring/silence target when camera isn't available
     private boolean mEnableRingSilenceFallback = false;
@@ -628,11 +629,11 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
         mLockPatternUtils = lockPatternUtils;
         mUpdateMonitor = updateMonitor;
         mCallback = callback;
+        mLockscreenStyle = Settings.System.getInt(mContext.getContentResolver(), Settings.System.LOCKSCREEN_LAYOUT, LAYOUT_STOCK);
+        mSettingsObserver = new SettingsObserver(new Handler());
+        mSettingsObserver.observe();
         mEnableMenuKeyInLockScreen = shouldEnableMenuKey();
         mCreationOrientation = configuration.orientation;
-
-        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
-        settingsObserver.observe();
 
         if (LockPatternKeyguardView.DEBUG_CONFIGURATION) {
             Log.v(TAG, "***** CREATING LOCK SCREEN", new RuntimeException());
@@ -851,6 +852,8 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
     public void cleanUp() {
         mUpdateMonitor.removeCallback(mInfoCallback); // this must be first
         mUpdateMonitor.removeCallback(mSimStateCallback);
+        mContext.getContentResolver().unregisterContentObserver(mSettingsObserver);
+        mSettingsObserver = null;
         mUnlockWidgetMethods.cleanUp();
         mLockPatternUtils = null;
         mUpdateMonitor = null;
@@ -886,8 +889,8 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
         if (DEBUG) Log.d(TAG, "Settings for lockscreen have changed lets update");
         ContentResolver resolver = mContext.getContentResolver();
 
-        mLockscreenStyle = Settings.System.getInt(resolver,
-        Settings.System.LOCKSCREEN_LAYOUT, LAYOUT_STOCK);
+        int mLockscreenStyle = Settings.System.getInt(resolver,
+                Settings.System.LOCKSCREEN_LAYOUT, LAYOUT_STOCK);
 
         int mLockscreenColor = Settings.System.getInt(resolver,
                 Settings.System.LOCKSCREEN_CUSTOM_TEXT_COLOR, COLOR_WHITE);
