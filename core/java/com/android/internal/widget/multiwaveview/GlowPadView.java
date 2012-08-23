@@ -1183,6 +1183,8 @@ public class GlowPadView extends View {
                 return null;
             }
         }
+        // @TODO: Fix Me, very dirty hack.
+        if (mTargetDescriptions.size() <= index) return null;
         return mTargetDescriptions.get(index);
     }
 
@@ -1195,6 +1197,8 @@ public class GlowPadView extends View {
                 return null;
             }
         }
+        // @TODO: Fix me, very dirty hack.
+        if (mDirectionDescriptions.size() <= index) return null;
         return mDirectionDescriptions.get(index);
     }
 
