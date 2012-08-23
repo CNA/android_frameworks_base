@@ -91,6 +91,8 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
 
     public static final int LAYOUT_STOCK = 0;
     public static final int LAYOUT_CENTERED = 1;
+    public static final int LAYOUT_SIX_EIGHT = 2;
+    public static final int LAYOUT_SIX_EIGHT_CENTERED = 3;
 
     private int mLockscreenStyle = LAYOUT_STOCK;
 
@@ -650,18 +652,34 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
             case LAYOUT_STOCK:
                 if (landscape)
                     inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
-                                     true);
+                                    true);
                 else
                     inflater.inflate(R.layout.keyguard_screen_tab_unlock, this,
-                                     true);
+                                    true);
                 break;
             case LAYOUT_CENTERED:
                 if (landscape)
                     inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
-                                     true);
+                                    true);
                 else
                     inflater.inflate(R.layout.keyguard_screen_tab_unlock_centered, this,
-                                     true);
+                                    true);
+                break;
+            case LAYOUT_SIX_EIGHT:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight, this,
+                                    true);
+                break;
+            case LAYOUT_SIX_EIGHT_CENTERED:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight_centered, this,
+                                    true);
                 break;
          }
 
