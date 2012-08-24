@@ -293,7 +293,6 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
             UnlockWidgetCommonMethods {
         private final GlowPadView mGlowPadView;
         private String[] mStoredTargets;
-        private int mTargetOffset;
         private boolean mIsScreenLarge;
 
         GlowPadViewMethods(GlowPadView glowPadView) {
@@ -379,15 +378,9 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
                 final boolean isLandscape = mCreationOrientation == Configuration.ORIENTATION_LANDSCAPE;
                 final Drawable blankActiveDrawable = res.getDrawable(R.drawable.ic_lockscreen_target_activated);
                 final InsetDrawable activeBack = new InsetDrawable(blankActiveDrawable, 0, 0, 0, 0);
-                // Shift targets for landscape lockscreen on phones
-                mTargetOffset = isLandscape && !mIsScreenLarge ? 2 : 0;
-                if (mTargetOffset == 2) {
-                    storedDraw.add(new TargetDrawable(res, null));
-                    storedDraw.add(new TargetDrawable(res, null));
-                }
                 // Add unlock target
                 storedDraw.add(new TargetDrawable(res, res.getDrawable(R.drawable.ic_lockscreen_unlock)));
-                for (int i = 0; i < 8 - mTargetOffset - 1; i++) {
+                for (int i = 0; i < 7; i++) {
                     int tmpInset = targetInset;
                     if (i < mStoredTargets.length) {
                         String uri = mStoredTargets[i];
@@ -505,10 +498,10 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
                 }
             } else {
                 final boolean isLand = mCreationOrientation == Configuration.ORIENTATION_LANDSCAPE;
-                if ((target == 0 && (mIsScreenLarge || !isLand)) || (target == 2 && !mIsScreenLarge && isLand)) {
+                if (target == 0) {
                     mCallback.goToUnlockScreen();
                 } else {
-                    target -= 1 + mTargetOffset;
+                    target -= 1;
                     if (target < mStoredTargets.length && mStoredTargets[target] != null) {
                         try {
                             Intent tIntent = Intent.parseUri(mStoredTargets[target], 0);
@@ -645,43 +638,20 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
 
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (DBG) Log.v(TAG, "Creation orientation = " + mCreationOrientation);
-
-        boolean landscape = mCreationOrientation == Configuration.ORIENTATION_LANDSCAPE;
-
-        switch (mLockscreenStyle) {
-            case LAYOUT_STOCK:
-                if (landscape)
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
-                                    true);
-                else
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this,
-                                    true);
-                break;
-            case LAYOUT_CENTERED:
-                if (landscape)
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
-                                    true);
-                else
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_centered, this,
-                                    true);
-                break;
-            case LAYOUT_SIX_EIGHT:
-                if (landscape)
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight_land, this,
-                                    true);
-                else
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight, this,
-                                    true);
-                break;
-            case LAYOUT_SIX_EIGHT_CENTERED:
-                if (landscape)
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight_land, this,
-                                    true);
-                else
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight_centered, this,
-                                    true);
-                break;
-         }
+        if (mCreationOrientation != Configuration.ORIENTATION_LANDSCAPE) {
+            switch (mLockscreenStyle) {
+                case LAYOUT_STOCK:
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this, true);
+                case LAYOUT_CENTERED:
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_centered, this, true);
+                case LAYOUT_SIX_EIGHT:
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight, this, true);
+                case LAYOUT_SIX_EIGHT_CENTERED:
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight_centered, this, true);
+            }
+        } else {
+            inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this, true);
+        }
 
         setBackground(mContext, (ViewGroup) findViewById(R.id.root));
 

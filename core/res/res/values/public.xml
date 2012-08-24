@@ -1319,7 +1319,6 @@
   <java-symbol type="layout" name="keyguard_screen_tab_unlock_six_eight" />
   <java-symbol type="layout" name="keyguard_screen_tab_unlock_six_eight_centered" />
   <java-symbol type="layout" name="keyguard_screen_tab_unlock_land" />
-  <java-symbol type="layout" name="keyguard_screen_tab_unlock_six_eight_land" />
   <java-symbol type="layout" name="keyguard_screen_unlock_landscape" />
   <java-symbol type="layout" name="keyguard_screen_unlock_portrait" />
   <java-symbol type="layout" name="recent_apps_dialog" />
