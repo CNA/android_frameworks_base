@@ -642,19 +642,42 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
 
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (DBG) Log.v(TAG, "Creation orientation = " + mCreationOrientation);
-        if (mCreationOrientation != Configuration.ORIENTATION_LANDSCAPE) {
-            switch (mLockscreenStyle) {
-                case LAYOUT_STOCK:
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this, true);
-                case LAYOUT_CENTERED:
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_centered, this, true);
-                case LAYOUT_SIX_EIGHT:
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight, this, true);
-                case LAYOUT_SIX_EIGHT_CENTERED:
-                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight_centered, this, true);
-            }
-        } else {
-            inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this, true);
+
+        boolean landscape = mCreationOrientation == Configuration.ORIENTATION_LANDSCAPE;
+
+        switch (mLockscreenStyle) {
+            case LAYOUT_STOCK:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this,
+                                    true);
+                break;
+            case LAYOUT_CENTERED:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_centered, this,
+                                    true);
+                break;
+            case LAYOUT_SIX_EIGHT:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight, this,
+                                    true);
+                break;
+            case LAYOUT_SIX_EIGHT_CENTERED:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_six_eight_centered, this,
+                                    true);
+                break;
         }
 
         setBackground(mContext, (ViewGroup) findViewById(R.id.root));
