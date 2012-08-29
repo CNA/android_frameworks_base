@@ -46,15 +46,12 @@ public class TogglesView extends LinearLayout {
     private static final String TOGGLE_LTE = "LTE";
     private static final String TOGGLE_DATA = "DATA";
     private static final String TOGGLE_WIFI = "WIFI";
-    private static final String TOGGLE_2G = "2G";
     private static final String TOGGLE_WIFI_AP = "AP";
     private static final String TOGGLE_AIRPLANE = "AIRPLANE_MODE";
     private static final String TOGGLE_VIBRATE = "VIBRATE";
     private static final String TOGGLE_SILENT = "SILENT";
     private static final String TOGGLE_TORCH = "TORCH";
     private static final String TOGGLE_SYNC = "SYNC";
-    private static final String TOGGLE_SWAGGER = "SWAGGER";
-    private static final String TOGGLE_FCHARGE = "FCHARGE";
     private static final String TOGGLE_TETHER = "TETHER";
     private static final String TOGGLE_NFC = "NFC";
     private int mWidgetsPerRow = 2;
@@ -66,8 +63,7 @@ public class TogglesView extends LinearLayout {
     public static final String STOCK_TOGGLES = TOGGLE_WIFI + TOGGLE_DELIMITER
             + TOGGLE_BLUETOOTH + TOGGLE_DELIMITER + TOGGLE_GPS
             + TOGGLE_DELIMITER + TOGGLE_AUTOROTATE + TOGGLE_DELIMITER
-            + TOGGLE_SWAGGER + TOGGLE_DELIMITER + TOGGLE_VIBRATE
-            + TOGGLE_DELIMITER + TOGGLE_SYNC + TOGGLE_DELIMITER + TOGGLE_SILENT;
+            + TOGGLE_VIBRATE + TOGGLE_DELIMITER + TOGGLE_SYNC + TOGGLE_DELIMITER + TOGGLE_SILENT;
 
     View mBrightnessSlider;
 
@@ -115,8 +111,6 @@ public class TogglesView extends LinearLayout {
                 newToggle = new LteToggle(mContext);
             else if (splitToggle.equals(TOGGLE_WIFI))
                 newToggle = new WifiToggle(mContext);
-            else if (splitToggle.equals(TOGGLE_2G))
-                newToggle = new TwoGToggle(mContext);
             else if (splitToggle.equals(TOGGLE_WIFI_AP))
                 newToggle = new WifiAPToggle(mContext);
             else if (splitToggle.equals(TOGGLE_AIRPLANE))
@@ -129,10 +123,6 @@ public class TogglesView extends LinearLayout {
                 newToggle = new TorchToggle(mContext);
             else if (splitToggle.equals(TOGGLE_SYNC))
                 newToggle = new SyncToggle(mContext);
-            else if (splitToggle.equals(TOGGLE_SWAGGER))
-                newToggle = new SwaggerToggle(mContext);
-            else if (splitToggle.equals(TOGGLE_FCHARGE))
-                newToggle = new FChargeToggle(mContext);
             else if (splitToggle.equals(TOGGLE_TETHER))
                 newToggle = new USBTetherToggle(mContext);
             else if (splitToggle.equals(TOGGLE_NFC))
