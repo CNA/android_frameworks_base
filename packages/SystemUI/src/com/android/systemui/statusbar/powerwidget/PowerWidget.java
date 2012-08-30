@@ -356,7 +356,7 @@ public class PowerWidget extends FrameLayout {
     private void updateVisibility() {
         // now check if we need to display the widget still
         boolean displayPowerWidget = Settings.System.getInt(mContext.getContentResolver(),
-                   Settings.System.EXPANDED_VIEW_WIDGET, 1) == 1;
+                   Settings.System.EXPANDED_VIEW_WIDGET, 0) == 1;
         View notifScroll = ((ViewGroup) getParent()).findViewById(R.id.scroll);
         MarginLayoutParams param = (MarginLayoutParams) notifScroll.getLayoutParams();
         if(!displayPowerWidget) {
