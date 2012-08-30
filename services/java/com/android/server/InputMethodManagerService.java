@@ -1439,7 +1439,7 @@ public class InputMethodManagerService extends IInputMethodManager.Stub
             unbindCurrentMethodLocked(true);
         }
         mShowOngoingImeSwitcherForPhones = Settings.System.getInt(mContext.getContentResolver(),
-               Settings.System.STATUS_BAR_IME_SWITCHER, 1) == 1;
+               Settings.System.STATUS_BAR_IME_SWITCHER, 0) == 1;
     }
 
     /* package */ void setInputMethodLocked(String id, int subtypeId) {
