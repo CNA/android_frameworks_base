@@ -223,7 +223,7 @@ public class VolumePanel extends Handler implements OnSeekBarChangeListener, Vie
             mVolumeLinkNotification = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.VOLUME_LINK_NOTIFICATION, 1) == 1;
             final int overlayStyle = Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.MODE_VOLUME_OVERLAY, VOLUME_OVERLAY_EXPANDABLE);
+                    Settings.System.MODE_VOLUME_OVERLAY, VOLUME_OVERLAY_SINGLE);
             changeOverlayStyle(overlayStyle);
         }
     };
