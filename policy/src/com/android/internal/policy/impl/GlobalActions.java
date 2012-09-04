@@ -110,7 +110,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private boolean mIsWaitingForEcmExit = false;
     private boolean mHasTelephony;
     private boolean mHasVibrator;
-    private boolean mEnableNavBarHideToggle = true;
 
     private IWindowManager mIWindowManager;
     private Profile mChosenProfile;
@@ -120,6 +119,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private static final String POWER_MENU_SCREENSHOT_ENABLED = "power_menu_screenshot_enabled";
     private static final String POWER_MENU_AIRPLANEMODE_ENABLED = "power_menu_airplanemode_enabled";
     private static final String POWER_MENU_SILENTTOGGLE_ENABLED = "power_menu_silenttoggle_enabled";
+    private static final String POWER_DIALOG_SHOW_NAVBAR_HIDE = "power_dialog_show_navbar_hide";
 
     /**
      * @param context everything needs a context :(
@@ -197,8 +197,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             mSilentModeAction = new SilentModeTriStateAction(mContext, mAudioManager, mHandler);
         }
 
-        mEnableNavBarHideToggle= Settings.System.getBoolean(mContext.getContentResolver(),
-                Settings.System.POWER_DIALOG_SHOW_NAVBAR_HIDE, false);
         mNavBarHideToggle = new NavBarAction(mHandler);
 
         mAirplaneModeOn = new ToggleAction(
@@ -339,8 +337,8 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             mItems.add(mAirplaneModeOn);
         }
 
-        // Next NavBar Hide
-        if(mEnableNavBarHideToggle) {
+        // next: navbar hide - only shown if enabled, disabled by default
+        if (Settings.System.getInt(mContext.getContentResolver(), POWER_DIALOG_SHOW_NAVBAR_HIDE, 0) == 1) {
             mItems.add(mNavBarHideToggle);
         }
 
