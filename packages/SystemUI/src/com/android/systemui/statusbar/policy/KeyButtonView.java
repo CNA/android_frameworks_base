@@ -66,8 +66,8 @@ public class KeyButtonView extends ImageView {
     RectF mRect = new RectF(0f,0f,0f,0f);
     AnimatorSet mPressedAnim;
 
-    int durationSpeedOn = 375;
-    int durationSpeedOff = 38;
+    int durationSpeedOn = 500;
+    int durationSpeedOff = 50;
 
     Runnable mCheckLongPress = new Runnable() {
         public void run() {
