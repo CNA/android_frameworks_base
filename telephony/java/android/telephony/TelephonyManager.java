@@ -476,6 +476,17 @@ public class TelephonyManager {
     /**
      * {@hide}
      */
+    public void toggle2G(boolean on) {
+        try {
+            getITelephony().toggle2G(on);
+        } catch (RemoteException e) {
+            //Silently fail
+        }
+    }
+
+    /**
+     * {@hide}
+     */
     public void toggleLTE(boolean on) {
         try {
             getITelephony().toggleLTE(on);

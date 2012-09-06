@@ -46,6 +46,7 @@ public class TogglesView extends LinearLayout {
     private static final String TOGGLE_LTE = "LTE";
     private static final String TOGGLE_DATA = "DATA";
     private static final String TOGGLE_WIFI = "WIFI";
+    private static final String TOGGLE_2G = "2G";
     private static final String TOGGLE_WIFI_AP = "AP";
     private static final String TOGGLE_AIRPLANE = "AIRPLANE_MODE";
     private static final String TOGGLE_VIBRATE = "VIBRATE";
@@ -108,6 +109,8 @@ public class TogglesView extends LinearLayout {
                 newToggle = new LteToggle(mContext);
             else if (splitToggle.equals(TOGGLE_WIFI))
                 newToggle = new WifiToggle(mContext);
+            else if (splitToggle.equals(TOGGLE_2G))
+                newToggle = new TwoGToggle(mContext);
             else if (splitToggle.equals(TOGGLE_WIFI_AP))
                 newToggle = new WifiAPToggle(mContext);
             else if (splitToggle.equals(TOGGLE_AIRPLANE))
