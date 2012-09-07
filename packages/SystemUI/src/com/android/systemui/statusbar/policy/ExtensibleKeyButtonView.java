@@ -41,8 +41,9 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
 	final static String ACTION_SEARCH = "**search**";
 	final static String ACTION_MENU = "**menu**";
 	final static String ACTION_POWER = "**power**";
-    final static String ACTION_NOTIFICATIONS = "**notifications**";
+        final static String ACTION_NOTIFICATIONS = "**notifications**";
 	final static String ACTION_RECENTS = "**recents**";
+        final static String ACTION_IME = "**ime**";
 	final static String ACTION_KILL = "**kill**";
 	final static String ACTION_NULL = "**null**";
 	final static String ACTION_WIDGETS = "**widgets**";
@@ -50,13 +51,13 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
     private static final String TAG = "Key.Ext";
 
     IStatusBarService mBarService;
-    
+
     public String mClickAction, mLongpress;
-    
+
     public Handler mHandler;
-    
+
     public ActivityManager mActivityManager;
-    
+
     public int mInjectKeycode;
 
     public ExtensibleKeyButtonView(Context context, AttributeSet attrs) {
@@ -65,7 +66,7 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
 
     public ExtensibleKeyButtonView(Context context, AttributeSet attrs, String ClickAction, String Longpress) {
         super(context, attrs);
-        
+
         mHandler = new Handler();
         mActivityManager = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
         mBarService = IStatusBarService.Stub.asInterface(
@@ -92,8 +93,8 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
         			setId(R.id.recent_apps);
         	}
         }
-        setSupportsLongPress (false);	
-        if (Longpress != null) 
+        setSupportsLongPress (false);
+        if (Longpress != null)
         	if ((!Longpress.equals(ACTION_NULL)) || (getCode() !=0)) {
         		// I want to allow long presses for defined actions, or if 
         		// primary action is a 'key' and long press isn't defined otherwise
@@ -101,7 +102,7 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
         		setOnLongClickListener(mLongPressListener);
         	}
     }
-        
+
     public void injectKeyDelayed(int keycode){
         mInjectKeycode = keycode;
         mHandler.removeCallbacks(onInjectKey_Down);
@@ -120,7 +121,7 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
                     InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
         }
     };
-    
+
     final Runnable onInjectKey_Up = new Runnable() {
     	public void run() {
             final KeyEvent ev = new KeyEvent(mDownTime, SystemClock.uptimeMillis(), KeyEvent.ACTION_UP, mInjectKeycode, 0,
@@ -131,7 +132,7 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
                     InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
         }
     };
- 
+
     Runnable mKillTask = new Runnable() {
         public void run() {
             try {
@@ -174,7 +175,7 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
             }
         }
     };
-    
+
     private OnClickListener mClickListener = new OnClickListener() {
 
         @Override
@@ -201,12 +202,17 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
                     // Let's hope we don't catch one!
                 }
                 return;
-        		
+
+                } else if (mClickAction.equals(ACTION_IME)) {
+
+                        getContext().sendBroadcast(new Intent("android.settings.SHOW_INPUT_METHOD_PICKER"));
+                        return;
+
         	} else if (mClickAction.equals(ACTION_KILL)) {
-        		
+
         		mHandler.postDelayed(mKillTask,ViewConfiguration.getGlobalActionKeyTimeout());
         		return;
-        		
+
         	} else if (mClickAction.equals(ACTION_WIDGETS)) {
         		// Widgets not yet imported to JB  - Zaphod 07/21/12
         		return;
@@ -254,8 +260,11 @@ public class ExtensibleKeyButtonView extends KeyButtonView {
         	} else if (mLongpress.equals(ACTION_POWER)) {
         		injectKeyDelayed(KeyEvent.KEYCODE_POWER);
         		return true;
-        	} else if (mLongpress.equals(ACTION_KILL)) {        		
-        		mHandler.post(mKillTask);  
+                } else if (mLongpress.equals(ACTION_IME)) {
+                        getContext().sendBroadcast(new Intent("android.settings.SHOW_INPUT_METHOD_PICKER"));
+                        return true;
+        	} else if (mLongpress.equals(ACTION_KILL)) {
+        		mHandler.post(mKillTask);
         		return true;
             } else if (mLongpress.equals(ACTION_WIDGETS)) {
             	// Widgets not yet imported to JB  - Zaphod 07/21/12
