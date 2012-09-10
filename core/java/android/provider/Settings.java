@@ -3462,6 +3462,21 @@ public final class Settings {
         /**
          * @hide
          */
+        public static final String SYSTEMUI_NAVRING_4 = "systemui_navring_4";
+
+        /**
+         * @hide
+         */
+        public static final String SYSTEMUI_NAVRING_5 = "systemui_navring_5";
+
+        /**
+         * @hide
+         */
+        public static final String SYSTEMUI_NAVRING_AMOUNT = "systemui_navring_amount";
+
+        /**
+         * @hide
+         */
         public static final String SYSTEMUI_NAVRING_ASSIST = "assist";
 
         /**
