@@ -849,7 +849,10 @@ public class SignalStrength implements Parcelable {
     private static void log(String s) {
         Log.w(LOG_TAG, s);
     }
-    
+
+    /**
+     * @hide
+     */
     public void setOemSignalStrength(int ratType, int gsmOemSignalStrength, int gsmOemBitErrorRate)
     {
       mOemRatType = ratType;
