@@ -42,7 +42,6 @@ import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -444,7 +443,10 @@ class KeyguardStatusViewManager implements OnClickListener {
                 mWeatherCondition.setVisibility(View.VISIBLE);
             }
             if (mWeatherUpdateTime != null) {
-                mWeatherUpdateTime.setText(DateUtils.getRelativeTimeSpanString(w.last_sync, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS));
+                Date lastTime = new Date(mWeatherInfo.last_sync);
+                String date = DateFormat.getDateFormat(getContext()).format(lastTime);
+                String time = DateFormat.getTimeFormat(getContext()).format(lastTime);
+                mWeatherUpdateTime.setText(date + " " + time);
                 mWeatherUpdateTime.setVisibility(showTimestamp ? View.VISIBLE : View.GONE);
             }
             if (mWeatherTempsPanel != null && mWeatherTemp != null && mWeatherLowHigh != null) {
