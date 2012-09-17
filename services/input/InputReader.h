@@ -162,9 +162,6 @@ struct InputReaderConfiguration {
     // True to show the location of touches on the touch screen as spots.
     bool showTouches;
 
-    // Ignore finger touches this long after the stylus has been used (including hover)
-    nsecs_t stylusPalmRejectionTime;
-
     InputReaderConfiguration() :
             virtualKeyQuietTime(0),
             pointerVelocityControlParameters(1.0f, 500.0f, 3000.0f, 3.0f),
@@ -181,9 +178,7 @@ struct InputReaderConfiguration {
             pointerGestureSwipeMaxWidthRatio(0.25f),
             pointerGestureMovementSpeedRatio(0.8f),
             pointerGestureZoomSpeedRatio(0.3f),
-            showTouches(false),
-            stylusPalmRejectionTime(50 * 10000000LL) // 50 ms
-    { }
+            showTouches(false) { }
 
     bool getDisplayInfo(int32_t displayId, bool external,
             int32_t* width, int32_t* height, int32_t* orientation) const;
@@ -1554,9 +1549,6 @@ private:
     VelocityControl mWheelXVelocityControl;
     VelocityControl mWheelYVelocityControl;
 
-    // The time the stylus event was processed by any TouchInputMapper
-    static nsecs_t mLastStylusTime;
-
     void sync(nsecs_t when);
 
     bool consumeRawTouches(nsecs_t when, uint32_t policyFlags);
@@ -1609,8 +1601,6 @@ private:
     const VirtualKey* findVirtualKeyHit(int32_t x, int32_t y);
 
     void assignPointerIds();
-
-    bool rejectPalm(nsecs_t when);
 };
 
 
