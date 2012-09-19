@@ -22,6 +22,7 @@ import android.app.ActivityManagerNative;
 import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -131,6 +132,20 @@ public abstract class BaseStatusBar extends SystemUI implements
     private IWindowManager mWindowManager;
     private boolean mDeviceProvisioned = false;
 
+    class StatusbarObserver extends ContentObserver {
+        StatusbarObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+        }
+    }
+
     public IWindowManager getWindowManager() {
         return mWindowManager;
     }
@@ -191,6 +206,9 @@ public abstract class BaseStatusBar extends SystemUI implements
     public void start() {
         mDisplay = ((WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay();
+
+        StatusbarObserver StatusbarObserver = new StatusbarObserver(new Handler());
+        StatusbarObserver.observe();
 
         mNavRingAmount = Settings.System.getInt(mContext.getContentResolver(),
                          Settings.System.SYSTEMUI_NAVRING_AMOUNT, 1);
@@ -399,6 +417,12 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected abstract WindowManager.LayoutParams getSearchLayoutParams(
             LayoutParams layoutParams);
+
+    protected void setStatusBarParams(View statusbarView){
+        int opacity = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.STATUS_BAR_TRANSPARENCY, 100);
+        statusbarView.getBackground().setAlpha(Math.round((opacity * 255) / 100));
+    }
 
     protected void updateRecentsPanel(int recentsResId) {
         // Recents Panel
