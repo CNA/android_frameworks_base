@@ -139,6 +139,15 @@
     <string name="turn_off_radio" msgid="8198784949987062346">"무선 끄기"</string>
     <string name="screen_lock" msgid="799094655496098153">"화면 잠금"</string>
     <string name="power_off" msgid="4266614107412865048">"종료"</string>
+    <string name="reboot_system" product="tablet">태블릿 다시 시작</string>
+    <string name="reboot_system" product="default">스마트폰 다시 시작</string>
+    <string name="global_action_screenshot">스크린샷 찍기</string>
+    <string name="reboot_reboot">재부팅 하기</string>
+    <string name="reboot_recovery">리커버리로 재부팅 하기</string>
+    <string name="reboot_bootloader">부트로더로 재부팅 하기</string>
+    <string name="reboot_bootmenu">부트메뉴</string>
+    <string name="reboot_fastboot">패스트붓</string>
+    <string name="reboot_download">다운로드</string>
     <string name="silent_mode_silent" msgid="319298163018473078">"벨소리가 무음입니다."</string>
     <string name="silent_mode_vibrate" msgid="7072043388581551395">"벨소리가 진동입니다."</string>
     <string name="silent_mode_ring" msgid="8592241816194074353">"벨소리가 켜져 있습니다."</string>
@@ -154,6 +163,8 @@
     <string name="global_actions" product="default" msgid="2406416831541615258">"휴대전화 옵션"</string>
     <string name="global_action_lock" msgid="2844945191792119712">"화면 잠금"</string>
     <string name="global_action_power_off" msgid="4471879440839879722">"종료"</string>
+    <string name="global_action_reboot">재부팅 메뉴</string>
+    <string name="global_action_choose_profile">프로필</string>
     <string name="global_action_toggle_silent_mode" msgid="8219525344246810925">"무음 모드"</string>
     <string name="global_action_silent_mode_on_status" msgid="3289841937003758806">"소리 꺼짐"</string>
     <string name="global_action_silent_mode_off_status" msgid="1506046579177066419">"소리 켜짐"</string>
