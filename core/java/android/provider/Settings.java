@@ -2427,7 +2427,13 @@ public final class Settings {
         public static final String WIDGET_BUTTONS_TABLET = "expanded_widget_buttons_tablet";
 
         /**
+         * Navigation bar transparency value
+         * from 0% to 100%
+         * @hide
+         */
+        public static final String NAV_BAR_TRANSPARENCY = "nav_bar_transparency";
 
+        /**
          * Navigation controls to Use
          *
          * @hide
