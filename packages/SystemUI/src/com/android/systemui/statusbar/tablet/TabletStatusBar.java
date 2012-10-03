@@ -1181,10 +1181,7 @@ public class TabletStatusBar extends BaseStatusBar implements
 
     @Override
     public void onRecentsPanelVisibilityChanged(boolean visible) {
-        boolean altBack = visible || mAltBackButtonEnabledForIme;
-        mCommandQueue.setNavigationIconHints(
-                altBack ? (mNavigationIconHints | StatusBarManager.NAVIGATION_HINT_BACK_ALT)
-                        : (mNavigationIconHints & ~StatusBarManager.NAVIGATION_HINT_BACK_ALT));
+
     }
 
     @Override
@@ -1225,25 +1222,13 @@ public class TabletStatusBar extends BaseStatusBar implements
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            if (v == mRecentButton) {
-                onClickRecentButton();
-            } else if (v == mInputMethodSwitchButton) {
+            if (v == mInputMethodSwitchButton) {
                 onClickInputMethodSwitchButton();
             } else if (v == mCompatModeButton) {
                 onClickCompatModeButton();
             }
         }
     };
-
-    public void onClickRecentButton() {
-        if (DEBUG) Slog.d(TAG, "clicked recent apps; disabled=" + mDisabled);
-        if ((mDisabled & StatusBarManager.DISABLE_EXPAND) == 0) {
-            int msg = (mRecentsPanel.getVisibility() == View.VISIBLE)
-                ? MSG_CLOSE_RECENTS_PANEL : MSG_OPEN_RECENTS_PANEL;
-            mHandler.removeMessages(msg);
-            mHandler.sendEmptyMessage(msg);
-        }
-    }
 
     public void onClickInputMethodSwitchButton() {
         if (DEBUG) Slog.d(TAG, "clicked input methods panel; disabled=" + mDisabled);
@@ -1510,12 +1495,7 @@ public class TabletStatusBar extends BaseStatusBar implements
 
         ArrayList<View> toShow = new ArrayList<View>();
 
-        // Extra Special Icons
-        // The IME switcher and compatibility mode icons take the place of notifications. You didn't
-        // need to see all those new emails, did you?
         int maxNotificationIconsCount = mMaxNotificationIcons;
-        if (mInputMethodSwitchButton.getVisibility() != View.GONE) maxNotificationIconsCount --;
-        if (mCompatModeButton.getVisibility()        != View.GONE) maxNotificationIconsCount --;
 
         final boolean provisioned = isDeviceProvisioned();
         // If the device hasn't been through Setup, we only show system notifications
