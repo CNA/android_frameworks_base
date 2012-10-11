@@ -53,7 +53,6 @@ import com.android.internal.telephony.cdma.sms.CdmaSmsAddress;
 import com.android.internal.telephony.cdma.sms.SmsEnvelope;
 import com.android.internal.telephony.cdma.sms.UserData;
 import com.android.internal.util.BitwiseInputStream;
-import com.android.internal.util.HexDump;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
