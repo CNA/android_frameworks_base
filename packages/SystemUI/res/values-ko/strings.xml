@@ -145,4 +145,24 @@
     <string name="accessibility_rotation_lock_off" msgid="4062780228931590069">"화면이 자동으로 회전됩니다."</string>
     <string name="accessibility_rotation_lock_on_landscape" msgid="6731197337665366273">"화면이 가로 방향으로 잠겨 있습니다."</string>
     <string name="accessibility_rotation_lock_on_portrait" msgid="5809367521644012115">"화면이 세로 방향으로 잠겨 있습니다."</string>
+    <string name="app_killed_message">앱 종료됨</string>    
+    <string name="toggle_bt">블투</string>
+    <string name="toggle_data">3G</string>
+    <string name="toggle_lte">LTE</string>
+    <string name="toggle_rotate">회전</string>
+    <string name="toggle_wifi">Wi-Fi</string>
+    <string name="toggle_gps">GPS</string>
+    <string name="toggle_2g">2G</string>
+    <string name="toggle_wifiap">Wi-Fi AP</string>
+    <string name="toggle_airplane">비행기모드</string>
+    <string name="toggle_vibrate">진동</string>
+    <string name="toggle_silent">무음</string>
+    <string name="toggle_torch">손전등</string>
+    <string name="toggle_sync">동기화</string>
+    <string name="toggle_fcharge">빠른 충전</string>
+    <string name="toggle_tether">테더링</string>
+    <string name="toggle_nfc">NFC</string>
+    <string name="status_bar_settings_toggles">토글</string>
+    <string name="brightness_label">밝기</string>
+    <string name="recents_kill_all_button_text">모두 종료</string>
 </resources>
